@@ -13,6 +13,10 @@ See the [ReactJS version here][reactsudoku].
 [reactsudoku]: https://github.com/andreynering/sudoku
 
 
+### DEMO
+
+[Online Play](https://xqin.net/sudoku/)
+
 ### 修改
 
 - 调整游戏进入流程及界面展示
