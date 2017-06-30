@@ -1,31 +1,45 @@
 @import "normalize";
-@import "github-corner";
 
-.sudoku-table {
-  border: 3px solid black;
+#app {
+  padding: 0 10px;
+}
+
+.sudoku-table, .controls table{
   margin-left: auto;
   margin-right: auto;
   font-size: 16pt;
 }
+
+.sudoku-table {
+  margin-top: 50px;
+  border: 3px solid black;
+}
+
+.sudoku-table td, .controls table td{
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  cursor: pointer;
+}
+
 .sudoku-table td {
   border: 1px solid black;
-  width: 35px;
-  height: 35px;
 }
-.sudoku-table input {
-  width: 35px;
-  height: 35px;
-  border: 0px;
-  text-align: center;
+
+.sudoku-table td.marked.focus {
+  background-color: #FECB7A;
+}
+
+.sudoku-table td.marked {
+  background-color: #FBEBD3;
 }
 
 .controls {
-  margin-top: 15px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.controls * {
-  margin-left: 5px;
+  margin: 20px auto 50px;
+  color: #8BD8AA;
+  font-size: 16pt;
+  text-align: center;
+  font-weight: bold;
 }
 
 .i2, .i5 {
@@ -36,37 +50,21 @@
   border-right: 3px solid black !important;
 }
 
-.not-editable input {
+.sudoku-table td.not-editable {
   font-weight: bold;
+  cursor: not-allowed;
 }
 
-.has-conflict input {
+.sudoku-table td.has-conflict {
   color: red;
 }
 
-@media (max-width: 600px) {
-  .github-corner {
-    display: none;
-  }
-}
-
-@media (min-width: 600px) {
-  .sudoku-table {
-    margin-top: 50px;
-  }
-
-  .controls {
-    width: 400px;
-  }
-}
-
 .dialog {
-  background-color: #f0f0f0;
-  width: 400px;
-  height: 400px;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
+
 .dialog * {
   margin-left: 5px;
   font-size: 20px;

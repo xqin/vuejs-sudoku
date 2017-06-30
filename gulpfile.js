@@ -24,3 +24,4 @@ gulp.task('js', function() {
     pipe(minify()).
     pipe(gulp.dest('bundle'));
 });
+
