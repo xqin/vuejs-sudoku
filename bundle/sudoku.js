@@ -11002,6 +11002,7 @@ new Vue({
     x: -1, // 当前选中的单元格的 x 坐标
     y: -1, // 当前选中的单元格的 y 坐标
     difficulty: 'easy', // 游戏难度默认为 Easy
+    autoTag: false,
     time: null
   },
   created: function () {
@@ -11013,7 +11014,52 @@ new Vue({
       this.startGame(this.difficulty)
     }
   },
+  computed: {
+    disabled: function(vm){
+      var ret = {}
+
+      if (vm.autoTag && vm.scell !== null) {
+        var item, I = vm.scell.i, J = vm.scell.j
+
+        for (var i=0; i<9; i++) {
+
+          item = this.game[vm.x][i]
+          if (item.editable === false) {
+            ret[item.value] = 1
+          }
+
+          item = this.game[i][vm.y]
+          if (item.editable === false) {
+            ret[item.value] = 1
+          }
+
+          for (var j=0; j<9; j++) {
+            item = this.game[i][j]
+            if (item.editable === false && item.i === I && item.j === J) {
+              ret[item.value] = 1
+            }
+          }
+        }
+      }
+
+      return ret
+    }
+  },
   methods: {
+    addTag: function(){
+      var vm = this
+
+      if (vm.scell === null || vm.scell.value === null || vm.scell.hasConflict) {
+        return
+      }
+
+      vm.scell.tag = !vm.scell.tag
+      vm.saveToLocalStorage()
+    },
+    toggleAutoTag: function() {
+      this.autoTag = !this.autoTag
+      this.saveToLocalStorage()
+    },
     difficultyClick: function(event) {
       event.preventDefault()
 
@@ -11041,6 +11087,7 @@ new Vue({
             i: Math.floor(i/3),
             j: Math.floor(j/3),
             value: value,
+            tag: false,
             editable: value === null,
             hasConflict: false
           }
@@ -11056,6 +11103,7 @@ new Vue({
       this.game = JSON.parse(localStorage.currentGame)
       this.time = parseInt(localStorage.time) || 0
       this.difficulty = localStorage.difficulty
+      this.autoTag = !!localStorage.autoTag
       var x = parseInt(localStorage.x)
       var y = parseInt(localStorage.y)
 
@@ -11121,7 +11169,7 @@ new Vue({
     cellFillValue: function(value) {
       var vm = this
 
-      if (vm.x === -1 || vm.y === -1) {// 当前没有选中的
+      if (vm.scell === null || vm.disabled[value] === 1) {// 当前没有选中的
         return
       }
 
@@ -11129,9 +11177,7 @@ new Vue({
 
       vm.checkConflicts()
 
-      vm.$nextTick(function() {
-        vm.saveToLocalStorage()
-      })
+      vm.saveToLocalStorage()
     },
     cellClick: function(event, cell) {
       if (!cell.editable) {
@@ -11160,17 +11206,19 @@ new Vue({
       localStorage.x = vm.x = x
       localStorage.y = vm.y = y
 
-      vm.$nextTick(function() {
-        vm.saveToLocalStorage()
-      })
+      vm.saveToLocalStorage()
     },
     formatedTime: function() {
       return formatTimeFromSeconds(this.time)
     },
     saveToLocalStorage: function() {
-      localStorage.currentGame = JSON.stringify(this.game)
-      localStorage.time = this.time >> 0
-      localStorage.difficulty = this.difficulty
+      var vm = this
+      vm.$nextTick(function() {
+        localStorage.currentGame = JSON.stringify(vm.game)
+        localStorage.time = vm.time >> 0
+        localStorage.difficulty = vm.difficulty
+        localStorage.autoTag = vm.autoTag
+      })
     }
   },
   ready: function() {

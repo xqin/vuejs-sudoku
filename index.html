@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charser="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie-edge">
     <title>Sudoku</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -12,15 +12,15 @@
     <div id="app">
       <div class="dialog">
         <p>已用时间: {{formatedTime()}}</p>
-        <button @click="difficultyClick" data-difficulty="easy">简单</button>
-        <button @click="difficultyClick" data-difficulty="medium">中等</button>
-        <button @click="difficultyClick" data-difficulty="hard">困难</button>
+        <button @click="difficultyClick" data-difficulty="easy" :class="{selected: difficulty === 'easy'}">简单</button>
+        <button @click="difficultyClick" data-difficulty="medium" :class="{selected: difficulty === 'medium'}">中等</button>
+        <button @click="difficultyClick" data-difficulty="hard" :class="{selected: difficulty === 'hard'}">困难</button>
       </div>
       <table class="sudoku-table">
         <tbody>
           <tr v-for="(irow, row) in game">
             <td v-for="(icell, cell) in row"
-              :class="[(irow === x || icell === y || (scell && (scell.i === cell.i && scell.j === cell.j))) ? 'marked' : '', 'i'+irow, 'j'+icell, cell.editable ? 'editable': 'not-editable', cell.hasConflict ? 'has-conflict' : 'no-conflict', (irow === x && icell === y) ? 'focus' : '']"
+              :class="[(irow === x || icell === y || (scell && (scell.i === cell.i && scell.j === cell.j))) ? 'marked' : '', 'i'+irow, 'j'+icell, cell.editable ? 'editable': 'not-editable', cell.hasConflict ? 'has-conflict' : 'no-conflict', (irow === x && icell === y) ? 'focus' : '', cell.tag ? 'tag' : '']"
               :data-i="irow" :data-j="icell"
               @click="cellClick($event, cell)"
             >{{cell.value || ' '}}</td>
@@ -30,10 +30,14 @@
       <div class="controls">
         <table>
         <tbody><tr>
-        <td v-for="i in 9" @click="cellFillValue(i + 1)" class="btn">{{i + 1}}</td>
+        <td v-for="i in 9" @click="cellFillValue(i + 1)" class="btn" :class="{disabled: disabled[i+1] === 1}">{{i + 1}}</td>
         </tr>
         </tbody>
         </table>
+      </div>
+      <div class="dialog">
+        <button @click="addTag">标记为已确认的数字</button><br/></br>
+        <button @click="toggleAutoTag">切换自动计算不可用数字的功能</button>
       </div>
     </div>
     <script src="bundle/sudoku-min.js"></script>

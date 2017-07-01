@@ -15,6 +15,10 @@
   border: 3px solid black;
 }
 
+button.selected {
+  color: red;
+}
+
 .sudoku-table td, .controls table td{
   width: 45px;
   height: 45px;
@@ -34,12 +38,21 @@
   background-color: #FBEBD3;
 }
 
+.sudoku-table td.tag {
+  color: green;
+  font-weight: bold;
+}
+
 .controls {
   margin: 20px auto 50px;
   color: #8BD8AA;
   font-size: 16pt;
   text-align: center;
   font-weight: bold;
+}
+
+.controls table td.disabled {
+  color: #D3D3D3;
 }
 
 .i2, .i5 {
