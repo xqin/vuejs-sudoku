@@ -20,7 +20,7 @@
         <tbody>
           <tr v-for="(irow, row) in game">
             <td v-for="(icell, cell) in row"
-              :class="[(irow === x || icell === y || (scell && (scell.i === cell.i && scell.j === cell.j))) ? 'marked' : '', 'i'+irow, 'j'+icell, cell.editable ? 'editable': 'not-editable', cell.hasConflict ? 'has-conflict' : 'no-conflict', (irow === x && icell === y) ? 'focus' : '', cell.tag ? 'tag' : '']"
+              :class="[hasMark(irow, icell, cell) ? 'marked' : '', 'i'+irow, 'j'+icell, cell.editable ? 'editable': 'not-editable', cell.hasConflict ? 'has-conflict' : 'no-conflict', (irow === x && icell === y) ? 'focus' : '', cell.tag ? 'tag' : '']"
               :data-i="irow" :data-j="icell"
               @click="cellClick($event, cell)"
             >{{cell.value || ' '}}</td>

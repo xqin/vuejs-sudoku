@@ -97,6 +97,22 @@ new Vue({
       vm.scell.tag = !vm.scell.tag
       vm.saveToLocalStorage()
     },
+    hasMark: function(irow, icell, cell) {
+      var vm = this
+
+      if (vm.scell !== null) { // 当前有选中的情况下
+        if (vm.scell.value !== null) { // 且选中的这个已经填上数字了
+          if (vm.autoTag) {
+            return cell.value === vm.scell.value
+          }
+          return
+        }
+
+        return (irow === vm.x || icell === vm.y || (vm.scell.i === cell.i && vm.scell.j === cell.j))
+      }
+
+      return false
+    },
     toggleAutoTag: function() {
       this.autoTag = !this.autoTag
       this.saveToLocalStorage()
