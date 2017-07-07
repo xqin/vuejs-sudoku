@@ -20,10 +20,25 @@ button.selected {
 }
 
 .sudoku-table td, .controls table td{
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   text-align: center;
   cursor: pointer;
+
+  @media (max-width: 320px) {
+	width: 32px;
+	height: 32px;
+  }
+
+  @media (min-width: 321px) and (max-width: 500px) {
+	width: 40px;
+	height: 40px;
+  }
+
+  @media (min-width: 600px) {
+	width: 60px;
+	height: 60px;
+  }
 }
 
 .sudoku-table td {
@@ -95,6 +110,10 @@ button.selected {
   }
 }
 
+.dialog i.icon.disabled, .dialog i.icon.disabled:active {
+	color: #d3d3d3;
+}
+
 .dialog i.icon:active {
   color: #8BD8AA;
 }
@@ -157,4 +176,14 @@ button.selected {
     transform: scale(1.0);
     -webkit-transform: scale(1.0);
   }
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }

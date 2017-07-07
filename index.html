@@ -15,9 +15,10 @@
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
       </div>
-      <div v-cloak v-else>
+      <div v-cloak v-else class="noselect">
         <div class="dialog">
-          <p>已用时间: {{formatedTime()}}</p>
+          <p class="congratulations" v-if="isComplete">Congratulations!</p>
+          <p v-else>已用时间: {{formatedTime()}}</p>
           <button @click="difficultyClick" data-difficulty="easy" :class="{selected: difficulty === 'easy'}">简单</button>
           <button @click="difficultyClick" data-difficulty="medium" :class="{selected: difficulty === 'medium'}">中等</button>
           <button @click="difficultyClick" data-difficulty="hard" :class="{selected: difficulty === 'hard'}">困难</button>
@@ -42,21 +43,22 @@
           </table>
         </div>
         <div class="dialog">
-          <i class="icon iconfont icon-eraser" @click="eraseValue"></i>
-          <i class="icon iconfont icon-pencil" @click="addTag"></i>
+          <i class="icon iconfont icon-eraser" :class="{disabled: caniuse}" @click="eraseValue"></i>
+          <i class="icon iconfont icon-pencil" :class="{disabled: caniuse || scell.hasConflict}" @click="addTag"></i>
           <i class="icon iconfont" :class="[autoTag ? 'icon-dengpao' : 'icon-dengpao1']" @click="toggleAutoTag"></i>
         </div>
       </div>
     </div>
     <script src="bundle/sudoku-min.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('./sw.js').then(function(registration) {
-            console.log('ServiceWorker registration successful with scope: ',    registration.scope);
-          }).catch(function(err) {
-            console.log('ServiceWorker registration failed: ', err);
-          });
-        }
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ',    registration.scope);
+        }).catch(function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      }
     </script>
   </body>
 </html>
+<!-- vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: -->

@@ -57,7 +57,23 @@ new Vue({
     }
   },
   computed: {
-    disabled: function(vm){
+    isComplete: function(vm) {
+      for (var i=0; i<9; i++) {
+        for (var j=0; j<9; j++) {
+          // 每个格子里都必须有值, 且和其他的格子不冲突
+          if (vm.game[i][j].value === null || vm.game[i][j].hasConflict) {
+            return false
+          }
+        }
+      }
+
+      return true
+    },
+    // 当前没有选中的, 或者选中的本身就没有值, 或者选中的这个是不可修改的
+    caniuse: function(vm) {
+      return vm.scell === null || vm.scell.editable === false || vm.scell.value === null
+    },
+    disabled: function(vm) {
       var ret = {}
 
       if (vm.scell === null || vm.scell.editable === false) {// 当前没有选中的,或者选中的是不可编辑的, 则将下方的数字全部灰掉
@@ -95,8 +111,7 @@ new Vue({
     eraseValue: function(){
       var vm = this
 
-      // 当前没有选中的, 或者选中的本身就没有值, 或者选中的这个是不可修改的
-      if (vm.scell === null || vm.scell.value === null || vm.scell.editable === false) {
+      if (vm.caniuse) {
         return
       }
 
@@ -108,7 +123,7 @@ new Vue({
     addTag: function(){
       var vm = this
 
-      if (vm.scell === null || vm.scell.value === null || vm.scell.hasConflict || vm.scell.editable === false) {
+      if (vm.caniuse || vm.scell.hasConflict) {
         return
       }
 
@@ -212,12 +227,9 @@ new Vue({
 
       // check horizontal lines
       for (var i = 0; i < 9; i++) {
-        var arr = []
-        for (var j = 0; j < 9; j++) {
-          arr.push(this.game[i][j])
-        }
-        this.checkSubset(arr)
+        this.checkSubset(this.game[i])
       }
+
       // check vertical lines
       for (var j = 0; j < 9; j++) {
         var arr = []
@@ -231,9 +243,11 @@ new Vue({
       this.checkSubset([c[0][0], c[0][1], c[0][2], c[1][0], c[1][1], c[1][2], c[2][0], c[2][1], c[2][2]])
       this.checkSubset([c[3][0], c[3][1], c[3][2], c[4][0], c[4][1], c[4][2], c[5][0], c[5][1], c[5][2]])
       this.checkSubset([c[6][0], c[6][1], c[6][2], c[7][0], c[7][1], c[7][2], c[8][0], c[8][1], c[8][2]])
+
       this.checkSubset([c[0][3], c[0][4], c[0][5], c[1][3], c[1][4], c[1][5], c[2][3], c[2][4], c[2][5]])
       this.checkSubset([c[3][3], c[3][4], c[3][5], c[4][3], c[4][4], c[4][5], c[5][3], c[5][4], c[5][5]])
       this.checkSubset([c[6][3], c[6][4], c[6][5], c[7][3], c[7][4], c[7][5], c[8][3], c[8][4], c[8][5]])
+
       this.checkSubset([c[0][6], c[0][7], c[0][8], c[1][6], c[1][7], c[1][8], c[2][6], c[2][7], c[2][8]])
       this.checkSubset([c[3][6], c[3][7], c[3][8], c[4][6], c[4][7], c[4][8], c[5][6], c[5][7], c[5][8]])
       this.checkSubset([c[6][6], c[6][7], c[6][8], c[7][6], c[7][7], c[7][8], c[8][6], c[8][7], c[8][8]])
@@ -308,3 +322,4 @@ new Vue({
   }
 })
 
+// vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2:
