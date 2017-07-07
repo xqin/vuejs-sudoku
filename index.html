@@ -7,37 +7,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="bundle/sudoku.css">
+    <link rel="stylesheet" href="bundle/iconfont.css">
   </head>
   <body>
     <div id="app">
-      <div class="dialog">
-        <p>已用时间: {{formatedTime()}}</p>
-        <button @click="difficultyClick" data-difficulty="easy" :class="{selected: difficulty === 'easy'}">简单</button>
-        <button @click="difficultyClick" data-difficulty="medium" :class="{selected: difficulty === 'medium'}">中等</button>
-        <button @click="difficultyClick" data-difficulty="hard" :class="{selected: difficulty === 'hard'}">困难</button>
+      <div class="spinner" v-if="loading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
       </div>
-      <table class="sudoku-table">
-        <tbody>
-          <tr v-for="(irow, row) in game">
-            <td v-for="(icell, cell) in row"
-              :class="[hasMark(irow, icell, cell) ? 'marked' : '', 'i'+irow, 'j'+icell, cell.editable ? 'editable': 'not-editable', cell.hasConflict ? 'has-conflict' : 'no-conflict', (irow === x && icell === y) ? 'focus' : '', cell.tag ? 'tag' : '']"
-              :data-i="irow" :data-j="icell"
-              @click="cellClick($event, cell)"
-            >{{cell.value || ' '}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="controls">
-        <table>
-        <tbody><tr>
-        <td v-for="i in 9" @click="cellFillValue(i + 1)" class="btn" :class="{disabled: disabled[i+1] === 1}">{{i + 1}}</td>
-        </tr>
-        </tbody>
+      <div v-cloak v-else>
+        <div class="dialog">
+          <p>已用时间: {{formatedTime()}}</p>
+          <button @click="difficultyClick" data-difficulty="easy" :class="{selected: difficulty === 'easy'}">简单</button>
+          <button @click="difficultyClick" data-difficulty="medium" :class="{selected: difficulty === 'medium'}">中等</button>
+          <button @click="difficultyClick" data-difficulty="hard" :class="{selected: difficulty === 'hard'}">困难</button>
+        </div>
+        <table class="sudoku-table">
+          <tbody>
+            <tr v-for="(irow, row) in game">
+              <td v-for="(icell, cell) in row"
+                :class="[hasMark(irow, icell, cell) ? 'marked' : '', 'i'+irow, 'j'+icell, cell.editable ? 'editable': 'not-editable', cell.hasConflict ? 'has-conflict' : 'no-conflict', (irow === x && icell === y) ? 'focus' : '', cell.tag ? 'tag' : '']"
+                :data-i="irow" :data-j="icell"
+                @click="cellClick($event, cell)"
+              >{{cell.value || ' '}}</td>
+            </tr>
+          </tbody>
         </table>
-      </div>
-      <div class="dialog">
-        <button @click="addTag">标记为已确认的数字</button><br/></br>
-        <button @click="toggleAutoTag">切换自动计算不可用数字的功能</button>
+        <div class="controls">
+          <table>
+          <tbody><tr>
+          <td v-for="i in 9" @click="cellFillValue(i + 1)" class="btn" :class="{disabled: (disabled === null || disabled[i+1] === 1)}">{{i + 1}}</td>
+          </tr>
+          </tbody>
+          </table>
+        </div>
+        <div class="dialog">
+          <i class="icon iconfont icon-eraser" @click="eraseValue"></i>
+          <i class="icon iconfont icon-pencil" @click="addTag"></i>
+          <i class="icon iconfont" :class="[autoTag ? 'icon-dengpao' : 'icon-dengpao1']" @click="toggleAutoTag"></i>
+        </div>
       </div>
     </div>
     <script src="bundle/sudoku-min.js"></script>

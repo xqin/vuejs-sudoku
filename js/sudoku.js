@@ -38,6 +38,7 @@ function formatTimeFromSeconds(sec) {
 new Vue({
   el: '#app',
   data: {
+    loading: true,
     game: null,
     scell: null, // 当前用户选中的单元格
     x: -1, // 当前选中的单元格的 x 坐标
@@ -59,7 +60,11 @@ new Vue({
     disabled: function(vm){
       var ret = {}
 
-      if (vm.autoTag && vm.scell !== null) {
+      if (vm.scell === null || vm.scell.editable === false) {// 当前没有选中的,或者选中的是不可编辑的, 则将下方的数字全部灰掉
+        return null
+      }
+
+      if (vm.autoTag) {
         var item, I = vm.scell.i, J = vm.scell.j
 
         for (var i=0; i<9; i++) {
@@ -87,10 +92,23 @@ new Vue({
     }
   },
   methods: {
+    eraseValue: function(){
+      var vm = this
+
+      // 当前没有选中的, 或者选中的本身就没有值, 或者选中的这个是不可修改的
+      if (vm.scell === null || vm.scell.value === null || vm.scell.editable === false) {
+        return
+      }
+
+      vm.scell.value = null
+      vm.scell.tag = false
+      vm.checkConflicts()
+      vm.saveToLocalStorage()
+    },
     addTag: function(){
       var vm = this
 
-      if (vm.scell === null || vm.scell.value === null || vm.scell.hasConflict) {
+      if (vm.scell === null || vm.scell.value === null || vm.scell.hasConflict || vm.scell.editable === false) {
         return
       }
 
@@ -102,10 +120,7 @@ new Vue({
 
       if (vm.scell !== null) { // 当前有选中的情况下
         if (vm.scell.value !== null) { // 且选中的这个已经填上数字了
-          if (vm.autoTag) {
-            return cell.value === vm.scell.value
-          }
-          return
+          return cell.value === vm.scell.value
         }
 
         return (irow === vm.x || icell === vm.y || (vm.scell.i === cell.i && vm.scell.j === cell.j))
@@ -160,7 +175,7 @@ new Vue({
       this.game = JSON.parse(localStorage.currentGame)
       this.time = parseInt(localStorage.time) || 0
       this.difficulty = localStorage.difficulty
-      this.autoTag = !!localStorage.autoTag
+      this.autoTag = localStorage.autoTag === 'true'
       var x = parseInt(localStorage.x)
       var y = parseInt(localStorage.y)
 
@@ -226,7 +241,7 @@ new Vue({
     cellFillValue: function(value) {
       var vm = this
 
-      if (vm.scell === null || vm.disabled[value] === 1) {// 当前没有选中的
+      if (vm.scell === null || vm.scell.editable === false || vm.disabled === null || vm.disabled[value] === 1) {// 当前没有选中的
         return
       }
 
@@ -237,10 +252,6 @@ new Vue({
       vm.saveToLocalStorage()
     },
     cellClick: function(event, cell) {
-      if (!cell.editable) {
-        return
-      }
-
       var vm = this
 
       if (vm.scell !== null && vm.scell !== cell) { // 如果当前有选中的, 则先清除之前的那个的选中状态
@@ -280,6 +291,10 @@ new Vue({
   },
   ready: function() {
     var vm = this
+
+    setTimeout(function(){
+      vm.loading = false
+    }, 666 + Math.random() * 1000)
 
     vm.timer = setInterval(function() { // 开计时器, 更新游戏耗时时间, 及 保存游戏时间至本地存储中
       if (vm.time !== null) {

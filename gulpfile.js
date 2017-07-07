@@ -4,8 +4,9 @@ var less = require('gulp-less');
 var cleanCSS = require('gulp-clean-css');
 var concat = require('gulp-concat');
 var minify = require('gulp-minify');
+var replace = require('gulp-replace');
 
-gulp.task('default', ['less', 'js']);
+gulp.task('default', ['less', 'js', 'icontfont', 'sw']);
 
 gulp.task('less', function() {
   return gulp.
@@ -25,3 +26,15 @@ gulp.task('js', function() {
     pipe(gulp.dest('bundle'));
 });
 
+gulp.task('icontfont', function() {
+  return gulp.
+    src(['icontfont/*']).
+    pipe(gulp.dest('bundle'));
+});
+
+gulp.task('sw', function() {
+  return gulp
+    .src(['sw.js'])
+    .pipe(replace(/sudoku_v\d+/, 'sudoku_v' + new Date().getTime()))
+    .pipe(gulp.dest('./'));
+});

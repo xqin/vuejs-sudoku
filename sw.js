@@ -1,4 +1,4 @@
-var CACHE_NAME = 'sudoku_v2';
+var CACHE_NAME = 'sudoku_v1499415593306';
 var urlsToCache = [
   './',
   'index.html',
@@ -13,6 +13,15 @@ self.addEventListener('install', function(event) {
       .then(function(cache) {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
+      }).then(function() {
+        // Message to simply show the lifecycle flow
+        console.log(
+          '[install] All required resources have been cached;',
+          'the Service Worker was successfully installed!'
+        );
+
+        // Force activation
+        return self.skipWaiting();
       })
   );
 });
@@ -29,6 +38,12 @@ self.addEventListener('activate', function(event) {
           }
         })
       );
+    }).then(function() {
+      // `claim()` sets this worker as the active worker for all clients that
+      // match the workers scope and triggers an `oncontrollerchange` event for
+      // the clients.
+      console.log('[ServiceWorker] Claiming clients for version', CACHE_NAME);
+      return self.clients.claim();
     })
   );
 });
