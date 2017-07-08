@@ -11020,6 +11020,30 @@ new Vue({
         localStorage.difficulty = vm.difficulty
         localStorage.autoTag = vm.autoTag
       })
+    },
+    onkeyup: function(e){
+      var keyCode = (e || window.event).keyCode >> 0
+      var vm = this
+
+      // number 1 ... 9
+      if (keyCode >= 49 && keyCode <= 57) {
+        vm.cellFillValue(keyCode - 48)
+        return
+      }
+
+      switch(keyCode) {
+        case 46: //delete
+        case 67: //c
+          vm.eraseValue()
+          break
+        case 32: // space
+        case 77: // m
+          vm.addTag()
+          break
+        case 84: // t
+          vm.toggleAutoTag()
+          break
+      }
     }
   },
   ready: function() {
@@ -11035,9 +11059,14 @@ new Vue({
         localStorage.time = vm.time
       }
     }, 1000)
+
+    document.body.onkeyup = function(){
+      vm.onkeyup.apply(vm, arguments)
+    }
   },
   beforeDestory: function() {
     clearInterval(this.timer)
+    document.body.onkeyup = null
   }
 })
 

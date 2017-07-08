@@ -13,9 +13,9 @@ See the [ReactJS version here][reactsudoku].
 [reactsudoku]: https://github.com/andreynering/sudoku
 
 
-### DEMO
+### DEMO (在线演示)
 
-[Online Play](https://xqin.net/sudoku/)
+[Play](https://xqin.net/sudoku/)
 
 ### 修改
 
@@ -24,4 +24,5 @@ See the [ReactJS version here][reactsudoku].
 - 增加将用户填写的数字标记为已确认完全正确(类似标注)的功能
 - 当填入数字后自动将相同的数字标亮
 - 增加 PWA 的离线功能, 使游戏在第一次加载之后, 即便断网也可正常运行.
+- 增加对键盘按键的支持, 可在单击格子后直接按 1-9 填入数字, 按 `DELETE` 清除当前格子中填入的内容, 按 空格(space) 键 对当前的格子进行标注
 
