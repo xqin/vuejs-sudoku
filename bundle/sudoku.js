@@ -10984,7 +10984,7 @@ new Vue({
 
       vm.saveToLocalStorage()
     },
-    cellClick: function(event, cell) {
+    cellClick: function(cell, X, Y) {
       var vm = this
 
       if (vm.scell !== null && vm.scell !== cell) { // 如果当前有选中的, 则先清除之前的那个的选中状态
@@ -10997,9 +10997,8 @@ new Vue({
 
       if (cell.focus) {
         vm.scell = cell
-        var el = event.target
-        x = parseInt(el.getAttribute('data-i'))
-        y = parseInt(el.getAttribute('data-j'))
+        x = X
+        y = Y
       } else {
         vm.scell = null
       }
@@ -11021,6 +11020,25 @@ new Vue({
         localStorage.autoTag = vm.autoTag
       })
     },
+    moveTo: function(direction, val) {
+      var vm = this
+
+      if (vm.scell === null) {
+        vm.cellClick(vm.game[0][0], 0, 0)
+        return
+      }
+
+      val = vm[direction] + val
+
+      // 更新后的值 不在合理的范围内, 则忽略
+      if (val < 0 || val > 8) {
+        return
+      }
+
+      vm[direction] = val
+
+      vm.cellClick(vm.game[vm.x][vm.y], vm.x, vm.y)
+    },
     onkeyup: function(e){
       var keyCode = (e || window.event).keyCode >> 0
       var vm = this
@@ -11032,6 +11050,18 @@ new Vue({
       }
 
       switch(keyCode) {
+        case 38: // up
+          vm.moveTo('x', -1)
+          break
+        case 40: // down
+          vm.moveTo('x', 1)
+          break
+        case 37: // left
+          vm.moveTo('y', -1)
+          break
+        case 39: // right
+          vm.moveTo('y', 1)
+          break
         case 46: //delete
         case 67: //c
           vm.eraseValue()

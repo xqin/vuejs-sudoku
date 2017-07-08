@@ -7,7 +7,11 @@
 .sudoku-table, .controls table{
   margin-left: auto;
   margin-right: auto;
-  font-size: 16pt;
+  font-size: 16px;
+
+  @media (min-width: 600px) {
+    font-size: 24px;
+  }
 }
 
 .sudoku-table {
@@ -26,18 +30,18 @@ button.selected {
   cursor: pointer;
 
   @media (max-width: 320px) {
-	width: 32px;
-	height: 32px;
+    width: 32px;
+    height: 32px;
   }
 
   @media (min-width: 321px) and (max-width: 500px) {
-	width: 40px;
-	height: 40px;
+  width: 40px;
+  height: 40px;
   }
 
   @media (min-width: 600px) {
-	width: 60px;
-	height: 60px;
+  width: 60px;
+  height: 60px;
   }
 }
 
@@ -111,7 +115,7 @@ button.selected {
 }
 
 .dialog i.icon.disabled, .dialog i.icon.disabled:active {
-	color: #d3d3d3;
+  color: #d3d3d3;
 }
 
 .dialog i.icon:active {

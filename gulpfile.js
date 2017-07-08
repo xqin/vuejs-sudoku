@@ -6,7 +6,7 @@ var concat = require('gulp-concat');
 var minify = require('gulp-minify');
 var replace = require('gulp-replace');
 
-gulp.task('default', ['less', 'js', 'icontfont', 'sw']);
+gulp.task('default', ['less', 'js', 'iconfont', 'sw']);
 
 gulp.task('less', function() {
   return gulp.
@@ -26,9 +26,9 @@ gulp.task('js', function() {
     pipe(gulp.dest('bundle'));
 });
 
-gulp.task('icontfont', function() {
+gulp.task('iconfont', function() {
   return gulp.
-    src(['icontfont/*']).
+    src(['iconfont/*']).
     pipe(gulp.dest('bundle'));
 });
 
@@ -38,3 +38,11 @@ gulp.task('sw', function() {
     .pipe(replace(/sudoku_v\d+/, 'sudoku_v' + new Date().getTime()))
     .pipe(gulp.dest('./'));
 });
+
+gulp.task('watch', function() {
+  gulp.watch('./index.html', ['sw']);
+  gulp.watch('./js/*.js', ['js', 'sw']);
+  gulp.watch('./less/**/*.less', ['less', 'sw']);
+  gulp.watch('./iconfont/*', ['iconfont', 'sw']);
+})
+
