@@ -320,7 +320,7 @@ new Vue({
 
       vm.cellClick(vm.game[vm.x][vm.y], vm.x, vm.y)
     },
-    onkeyup: function(e){
+    onkeydown: function(e){
       var keyCode = (e || window.event).keyCode >> 0
       var vm = this
 
@@ -371,13 +371,13 @@ new Vue({
       }
     }, 1000)
 
-    document.body.onkeyup = function(){
-      vm.onkeyup.apply(vm, arguments)
+    document.body.onkeydown = function(){
+      vm.onkeydown.apply(vm, arguments)
     }
   },
   beforeDestory: function() {
     clearInterval(this.timer)
-    document.body.onkeyup = null
+    document.body.onkeydown = null
   }
 })
 
