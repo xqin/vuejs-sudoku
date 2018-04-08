@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="bundle/iconfont.css">
   </head>
   <body>
-    <div id="app">
-      <div class="spinner" v-if="loading">
+    <div id="app" v-cloak>
+      <div  class="spinner" v-if="loading">
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
       </div>
-      <div v-cloak v-else class="noselect">
+      <div v-else class="noselect">
         <div class="dialog">
           <p class="congratulations" v-if="isComplete">Congratulations!</p>
           <p v-else>已用时间: {{formatedTime()}}</p>

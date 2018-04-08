@@ -35,10 +35,12 @@ function formatTimeFromSeconds(sec) {
   return str
 }
 
+var hasExistingGame = !!localStorage.currentGame
+
 new Vue({
   el: '#app',
   data: {
-    loading: true,
+    loading: !hasExistingGame,
     game: null,
     scell: null, // 当前用户选中的单元格
     x: -1, // 当前选中的单元格的 x 坐标
@@ -50,7 +52,7 @@ new Vue({
   created: function () {
     var vm = this
 
-    if (vm.hasExistingGame()) { // 如果之前有保存的游戏, 则直接展示
+    if (hasExistingGame) { // 如果之前有保存的游戏, 则直接展示
       this.continueGame()
     } else {
       this.startGame(this.difficulty)
@@ -201,9 +203,6 @@ new Vue({
           this.scell = this.game[x][y]
         }
       }
-    },
-    hasExistingGame: function() {
-      return !!localStorage.currentGame
     },
     markAllWithoutConflict: function() {
       for (var i = 0; i < 9; i++) {
@@ -360,9 +359,11 @@ new Vue({
   ready: function() {
     var vm = this
 
-    setTimeout(function(){
-      vm.loading = false
-    }, 666 + Math.random() * 1000)
+    if (vm.loading) {
+      setTimeout(function(){
+        vm.loading = false
+      }, 666 + Math.random() * 1000)
+    }
 
     vm.timer = setInterval(function() { // 开计时器, 更新游戏耗时时间, 及 保存游戏时间至本地存储中
       if (vm.time !== null) {
