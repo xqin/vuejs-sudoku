@@ -1,4 +1,4 @@
-var CACHE_NAME = 'sudoku_v1523195832410';
+var CACHE_NAME = 'sudoku_v1523196772450';
 var urlsToCache = [
   './',
   'index.html',
