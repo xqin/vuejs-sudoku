@@ -1,13 +1,13 @@
-var CACHE_NAME = 'sudoku_v1523196772450';
+var CACHE_NAME = 'sudoku_v1523197475895';
 var urlsToCache = [
   './',
   'index.html',
   'bundle/sudoku.css',
   'bundle/iconfont.css',
-  'bundle/iconfont.eot',
-  'bundle/iconfont.svg',
-  'bundle/iconfont.ttf',
-  'bundle/iconfont.woff',
+  'bundle/iconfont.eot?t=1499406127772',
+  'bundle/iconfont.svg?t=1499406127772',
+  'bundle/iconfont.ttf?t=1499406127772',
+  'bundle/iconfont.woff?t=1499406127772',
   'bundle/sudoku-min.js'
 ];
 
