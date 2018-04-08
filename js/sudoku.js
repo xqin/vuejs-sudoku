@@ -186,6 +186,9 @@ new Vue({
       this.difficulty = difficulty
       this.game = game
       this.time = 0
+      this.x = -1
+      this.y = -1
+      this.scell = null
       this.saveToLocalStorage()
     },
     continueGame: function() {
@@ -298,6 +301,8 @@ new Vue({
         localStorage.time = vm.time >> 0
         localStorage.difficulty = vm.difficulty
         localStorage.autoTag = vm.autoTag
+        localStorage.x = vm.x
+        localStorage.y = vm.y
       })
     },
     moveTo: function(direction, val) {
