@@ -11067,6 +11067,7 @@ new Vue({
           vm.moveTo('y', 1)
           break
         case 46: //delete
+        case 48: //0
         case 67: //c
           vm.eraseValue()
           break
